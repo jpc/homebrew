@@ -1,7 +1,7 @@
 require 'formula'
 
 class Openimageio <Formula
-  head 'http://svn.openimageio.org/oiio/branches/RB-0.8/', :using => :svn
+  url 'http://svn.openimageio.org/oiio/branches/RB-0.8/', :using => :svn
   version "0.8"
   homepage 'http://openimageio.org'
 
@@ -12,15 +12,13 @@ class Openimageio <Formula
   depends_on 'boost'
 
   # build plugins
-  depends_on 'libpng' => :optional
+  depends_on 'libpng'  => :optional
   depends_on 'libtiff' => :optional
-  depends_on 'jpeg' => :optional
-  depends_on 'jasper' => :optional
+  depends_on 'jpeg'    => :optional
+  depends_on 'jasper'  => :optional
 
-  # Qt linking not currently working.
-  # # build iv
-  # depends_on 'qt' => :optional
-  # depends_on 'glew' => :optional
+  # Qt linking, to build iv, is not currently working.
+  # Would need qt and glew as deps for this.
 
   depends_on 'tbb' => :optional
 

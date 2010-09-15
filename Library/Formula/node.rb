@@ -1,26 +1,30 @@
 require 'formula'
 
 class Node <Formula
-  url 'http://nodejs.org/dist/node-v0.1.99.tar.gz'
+  url 'http://nodejs.org/dist/node-v0.2.1.tar.gz'
   head 'git://github.com/ry/node.git'
   homepage 'http://nodejs.org/'
-  md5 '641059d904fd87c29f16a31be862cabb'
+  md5 'c6051dd216817bf0f95bea80c42cf262'
 
-  aka 'node.js'
-  
-  def skip_clean? path
-    # TODO: at some point someone should tweak this so it only skips clean
-    # for the bits that break the build otherwise
-    true
+  # Stripping breaks dynamic loading
+  skip_clean :all
+
+  def options
+    [["--debug", "Build with debugger hooks."]]
   end
 
   def install
     fails_with_llvm
-    inreplace %w{wscript configure} do |s|
+
+    inreplace 'wscript' do |s|
       s.gsub! '/usr/local', HOMEBREW_PREFIX
       s.gsub! '/opt/local/lib', '/usr/lib'
     end
-    system "./configure", "--prefix=#{prefix}"
+
+    args = ["--prefix=#{prefix}"]
+    args << "--debug" if ARGV.include? '--debug'
+
+    system "./configure", *args
     system "make install"
   end
 end
